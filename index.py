@@ -37,3 +37,18 @@ def decrypt(ciphertext, key): # We define the decrypt function that takes the ci
         else:
             plaintext += c_char
     return plaintext
+# Example usage
+# =============================
+# the main program
+# =============================
+print("=== Vigenere Cipher ===")
+text = input("Enter the text to encrypt: ")
+key = input("Enter the key: ")
+
+# Encrypt the text
+cipher_text = encrypt(text, key)
+print(f"Encrypted text: {cipher_text}")
+
+# Decrypt the text
+original_text = decrypt(cipher_text, key)
+print(f"Decrypted text: {original_text}")
