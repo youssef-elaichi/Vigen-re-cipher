@@ -23,4 +23,17 @@ def encrypt(text, key): # We define the encrypt function that takes the text and
         else:
             ciphertext += t_char
     return ciphertext
-
+def decrypt(ciphertext, key): # We define the decrypt function that takes the ciphertext and the key as parameters
+    ciphertext = ciphertext.upper() # We change the ciphertext to uppercase to simplify the decryption process
+    key =repeat_key(ciphertext, key.upper())
+    plaintext = ""
+    for c_char, k_char in zip(ciphertext, key):
+        if c_char.isalpha():
+            c_num = ord(c_char) - ord('A')
+            k_num = ord(k_char) - ord('A')
+            t_num = (c_num - k_num + 26) % 26 # We subtract the key number from the ciphertext number and add 26 to ensure we get a positive result before taking modulus 26
+            t_char = chr(t_num + ord('A'))
+            plaintext += t_char
+        else:
+            plaintext += c_char
+    return plaintext
