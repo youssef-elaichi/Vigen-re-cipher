@@ -1,13 +1,13 @@
 def repeat_key(text, key): # We define the repeat_key function that takes the text and the key as parameters
-    pepeated_key = "" # We initialize an empty string to store the repeated key
+    repeated_key = "" # We initialize an empty string to store the repeated key
     key_index = 0 # We initialize a key index to keep track of our position in the key
     for char in text: # We iterate through each character in the text 
         if char.isalpha(): # We check if the character is an alphabet
             repeated_key += key[key_index % len(key)] # We repeat the key by using the modulus operator to wrap around the key
             key_index += 1 # We increment the key index to move to the next character in the key
         else:
-            pepeated_key = char # It is not an alphabet, so we keep it as it is 
-    return pepeated_key
+            repeated_key += char # It is not an alphabet, so we keep it as it is 
+    return repeated_key
 def encrypt(text, key): # We define the encrypt function that takes the text and the key as parameters
     text = text.upper() # We change the text to uppercase to simplify the encryption process
     key = repeat_key(text, key.upper()) # We repeat the key to match the length of the text
@@ -42,13 +42,46 @@ def decrypt(ciphertext, key): # We define the decrypt function that takes the ci
 # the main program
 # =============================
 print("=== Vigenere Cipher ===")
-text = input("Enter the text to encrypt: ")
-key = input("Enter the key: ")
+while True:
 
-# Encrypt the text
-cipher_text = encrypt(text, key)
-print(f"Encrypted text: {cipher_text}")
+    print("/n1 - Encrypt")
+    print("2 - Decrypt")
+    print("3 - Exit")
 
-# Decrypt the text
-original_text = decrypt(cipher_text, key)
-print(f"Decrypted text: {original_text}")
+    choice = input(" Choose an option (1/2/3): ")
+
+
+    if choice not in ['1', '2', '3']:
+        print("Invalid option. Please choose 1, 2, or 3.")
+        continue
+
+    if choice == '1':
+        text = input("Enter the text to encrypt: ")
+
+        while True:
+            key = input("Enter the key: ")
+            if key.isalpha():
+                break
+            print("Key must contain only letters!")
+
+
+        cipher_text = encrypt(text, key)
+        print(f"Encrypted text: {cipher_text}")
+
+    elif choice == '2':
+        text = input("Enter the text to decrypt: ")
+
+        while True:
+            key = input("Enter the key: ")
+            if key.isalpha():
+                break
+            print("Key must contain only letters!")
+
+        original_text = decrypt(text, key)
+        print(f"Decrypted text: {original_text}")
+
+        
+    elif choice == "3":
+        print("Goodbye 👋")
+        break
+
