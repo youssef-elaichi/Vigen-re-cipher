@@ -6,6 +6,8 @@ It can **encrypt and decrypt** text while preserving the **case of letters** (up
 
 It also supports **reading from and writing to files** (`input.txt` and `output.txt`) or manual input.
 
+This version includes **progress feedback** for long texts, showing encryption/decryption progress in the console.
+
 ---
 
 ## Features
@@ -13,6 +15,7 @@ It also supports **reading from and writing to files** (`input.txt` and `output.
 - Preserve uppercase and lowercase letters.
 - Ignore numbers, symbols, and spaces.
 - Validate key to allow only alphabetic characters.
+- Show progress for large files.
 - Save the result to `output.txt`.
 
 ---

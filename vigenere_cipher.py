@@ -1,4 +1,4 @@
-import time  # فقط لتوضيح progress feedback
+import time  # progress feedback
 
 # ==============================
 # Vigenere Cipher with Progress Feedback
