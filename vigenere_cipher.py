@@ -1,10 +1,8 @@
+import time  # فقط لتوضيح progress feedback
+
 # ==============================
-# Project: Vigenere Cipher
-# Goal: Encrypt and decrypt text using Vigenere cipher
-# Supports both manual input and reading/writing files
-# Preserves letter case and ignores non-alphabetic characters
+# Vigenere Cipher with Progress Feedback
 # ==============================
-import time  
 
 def repeat_key(text, key):
     """Repeat the key to match the length of the text, skipping non-alphabetic characters."""
@@ -18,13 +16,12 @@ def repeat_key(text, key):
             repeated_key += char
     return repeated_key
 
-
 def encrypt_with_progress(text, key):
+    """Encrypt the text with Vigenere cipher and show progress."""
     key = repeat_key(text, key)
     ciphertext = ""
 
     for i, (t_char, k_char) in enumerate(zip(text, key), start=1):
-
         if t_char.isupper():
             t_num = ord(t_char) - ord('A')
             k_num = ord(k_char.upper()) - ord('A')
@@ -38,18 +35,17 @@ def encrypt_with_progress(text, key):
         else:
             ciphertext += t_char
 
-        # Print progress every 5%
+        # Progress every 5%
         if i % max(1, len(text)//20) == 0:
             percent = (i / len(text)) * 100
             print(f"Progress: {percent:.0f}%", end="\r")
-            time.sleep(0.01)  # Optional: slow down to see progress
+            time.sleep(0.01)
 
-    print()  # new line after progress
+    print()
     return ciphertext
 
-
 def decrypt_with_progress(ciphertext, key):
-    """Decrypt the text with progress feedback."""
+    """Decrypt the text with Vigenere cipher and show progress."""
     key = repeat_key(ciphertext, key)
     plaintext = ""
 
@@ -67,15 +63,14 @@ def decrypt_with_progress(ciphertext, key):
         else:
             plaintext += c_char
 
-        # Print progress every 5%
+        # Progress every 5%
         if i % max(1, len(ciphertext)//20) == 0:
             percent = (i / len(ciphertext)) * 100
             print(f"Progress: {percent:.0f}%", end="\r")
-            time.sleep(0.01)  # Optional: slow down to see progress
+            time.sleep(0.01)
 
-    print()  # new line after progress
+    print()
     return plaintext
-
 
 # ==============================
 # Main Program with Menu
@@ -108,18 +103,15 @@ while True:
         else:
             text = input("Enter the text to encrypt: ")
 
-        # Validate key
         while True:
             key = input("Enter the key: ")
             if key.isalpha():
                 break
             print("Key must contain only letters!")
 
-        # Encrypt text
         cipher_text = encrypt_with_progress(text, key)
         print(f"Encrypted text:\n{cipher_text}")
 
-        # Write to file
         with open("output.txt", "w", encoding="utf-8") as f:
             f.write(cipher_text)
         print("Encrypted text saved to output.txt")
@@ -129,7 +121,7 @@ while True:
         while mode not in ['1', '2']:
             mode = input("Invalid choice! Choose 1 for file, 2 for manual input: ")
 
-        if mode == '1':  # Read from file
+        if mode == '1':
             try:
                 with open("input.txt", "r", encoding="utf-8") as f:
                     text = f.read()
@@ -139,18 +131,15 @@ while True:
         else:
             text = input("Enter the text to decrypt: ")
 
-        # Validate key
         while True:
             key = input("Enter the key: ")
             if key.isalpha():
                 break
             print("Key must contain only letters!")
 
-        # Decrypt text
         original_text = decrypt_with_progress(text, key)
         print(f"Decrypted text:\n{original_text}")
 
-        # Write to file
         with open("output.txt", "w", encoding="utf-8") as f:
             f.write(original_text)
         print("Decrypted text saved to output.txt")
