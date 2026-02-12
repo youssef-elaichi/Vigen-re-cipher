@@ -116,7 +116,7 @@ while True:
             print("Key must contain only letters!")
 
         # Encrypt text
-        cipher_text = encrypt(text, key)
+        cipher_text = encrypt_with_progress(text, key)
         print(f"Encrypted text:\n{cipher_text}")
 
         # Write to file
@@ -147,7 +147,7 @@ while True:
             print("Key must contain only letters!")
 
         # Decrypt text
-        original_text = decrypt(text, key)
+        original_text = decrypt_with_progress(text, key)
         print(f"Decrypted text:\n{original_text}")
 
         # Write to file
