@@ -1,37 +1,45 @@
-def repeat_key(text, key): # We define the repeat_key function that takes the text and the key as parameters
-    repeated_key = "" # We initialize an empty string to store the repeated key
-    key_index = 0 # We initialize a key index to keep track of our position in the key
-    for char in text: # We iterate through each character in the text 
-        if char.isalpha(): # We check if the character is an alphabet
-            repeated_key += key[key_index % len(key)] # We repeat the key by using the modulus operator to wrap around the key
-            key_index += 1 # We increment the key index to move to the next character in the key
+# ==============================
+# Project: Vigenere Cipher
+# Goal: Encrypt and decrypt text using Vigenere cipher
+# Supports both manual input and reading/writing files
+# Preserves letter case and ignores non-alphabetic characters
+# ==============================
+
+def repeat_key(text, key):
+    """Repeat the key to match the length of the text, skipping non-alphabetic characters."""
+    repeated_key = ""
+    key_index = 0
+    for char in text:
+        if char.isalpha():
+            repeated_key += key[key_index % len(key)]
+            key_index += 1
         else:
-            repeated_key += char # It is not an alphabet, so we keep it as it is 
+            repeated_key += char
     return repeated_key
 
 def encrypt(text, key):
-    key = repeat_key(text, key)  # ما كنحولوش للـ upper هنا
+    """Encrypt the text using Vigenere cipher while preserving case."""
+    key = repeat_key(text, key)
     ciphertext = ""
 
     for t_char, k_char in zip(text, key):
-        if t_char.isupper():  # حرف كبير
+        if t_char.isupper():
             t_num = ord(t_char) - ord('A')
             k_num = ord(k_char.upper()) - ord('A')
             c_num = (t_num + k_num) % 26
-            c_char = chr(c_num + ord('A'))
-            ciphertext += c_char
-        elif t_char.islower():  # حرف صغير
+            ciphertext += chr(c_num + ord('A'))
+        elif t_char.islower():
             t_num = ord(t_char) - ord('a')
             k_num = ord(k_char.lower()) - ord('a')
             c_num = (t_num + k_num) % 26
-            c_char = chr(c_num + ord('a'))
-            ciphertext += c_char
-        else:  
+            ciphertext += chr(c_num + ord('a'))
+        else:
             ciphertext += t_char
 
     return ciphertext
 
 def decrypt(ciphertext, key):
+    """Decrypt the text using Vigenere cipher while preserving case."""
     key = repeat_key(ciphertext, key)
     plaintext = ""
 
@@ -40,64 +48,95 @@ def decrypt(ciphertext, key):
             c_num = ord(c_char) - ord('A')
             k_num = ord(k_char.upper()) - ord('A')
             t_num = (c_num - k_num + 26) % 26
-            t_char = chr(t_num + ord('A'))
-            plaintext += t_char
+            plaintext += chr(t_num + ord('A'))
         elif c_char.islower():
             c_num = ord(c_char) - ord('a')
             k_num = ord(k_char.lower()) - ord('a')
             t_num = (c_num - k_num + 26) % 26
-            t_char = chr(t_num + ord('a'))
-            plaintext += t_char
+            plaintext += chr(t_num + ord('a'))
         else:
             plaintext += c_char
 
     return plaintext
 
-# Example usage
-# =============================
-# the main program
-# =============================
+# ==============================
+# Main Program with Menu
+# ==============================
 print("=== Vigenere Cipher ===")
-while True:
 
+while True:
     print("\n1 - Encrypt")
     print("2 - Decrypt")
     print("3 - Exit")
 
-    choice = input(" Choose an option (1/2/3): ")
-
+    choice = input("Choose an option (1/2/3): ")
 
     if choice not in ['1', '2', '3']:
         print("Invalid option. Please choose 1, 2, or 3.")
         continue
 
     if choice == '1':
-        text = input("Enter the text to encrypt: ")
+        mode = input("Encrypt from file (1) or manual input (2)? Choose 1/2: ")
+        while mode not in ['1', '2']:
+            mode = input("Invalid choice! Choose 1 for file, 2 for manual input: ")
 
+        if mode == '1':  # Read from file
+            try:
+                with open("input.txt", "r", encoding="utf-8") as f:
+                    text = f.read()
+            except FileNotFoundError:
+                print("File input.txt not found!")
+                continue
+        else:
+            text = input("Enter the text to encrypt: ")
+
+        # Validate key
         while True:
             key = input("Enter the key: ")
             if key.isalpha():
                 break
             print("Key must contain only letters!")
 
-
+        # Encrypt text
         cipher_text = encrypt(text, key)
-        print(f"Encrypted text: {cipher_text}")
+        print(f"Encrypted text:\n{cipher_text}")
+
+        # Write to file
+        with open("output.txt", "w", encoding="utf-8") as f:
+            f.write(cipher_text)
+        print("Encrypted text saved to output.txt")
 
     elif choice == '2':
-        text = input("Enter the text to decrypt: ")
+        mode = input("Decrypt from file (1) or manual input (2)? Choose 1/2: ")
+        while mode not in ['1', '2']:
+            mode = input("Invalid choice! Choose 1 for file, 2 for manual input: ")
 
+        if mode == '1':  # Read from file
+            try:
+                with open("input.txt", "r", encoding="utf-8") as f:
+                    text = f.read()
+            except FileNotFoundError:
+                print("File input.txt not found!")
+                continue
+        else:
+            text = input("Enter the text to decrypt: ")
+
+        # Validate key
         while True:
             key = input("Enter the key: ")
             if key.isalpha():
                 break
             print("Key must contain only letters!")
 
+        # Decrypt text
         original_text = decrypt(text, key)
-        print(f"Decrypted text: {original_text}")
+        print(f"Decrypted text:\n{original_text}")
 
-        
-    elif choice == "3":
+        # Write to file
+        with open("output.txt", "w", encoding="utf-8") as f:
+            f.write(original_text)
+        print("Decrypted text saved to output.txt")
+
+    elif choice == '3':
         print("Goodbye 👋")
         break
-
