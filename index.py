@@ -8,35 +8,51 @@ def repeat_key(text, key): # We define the repeat_key function that takes the te
         else:
             repeated_key += char # It is not an alphabet, so we keep it as it is 
     return repeated_key
-def encrypt(text, key): # We define the encrypt function that takes the text and the key as parameters
-    text = text.upper() # We change the text to uppercase to simplify the encryption process
-    key = repeat_key(text, key.upper()) # We repeat the key to match the length of the text
+
+def encrypt(text, key):
+    key = repeat_key(text, key)  # ما كنحولوش للـ upper هنا
     ciphertext = ""
 
-    for t_char, k_char in zip(text, key): # We iterate through the text and the repeated key simultaneously using the zip function
-        if t_char.isalpha(): # We check if the character is an alphabet
-            t_num = ord(t_char) - ord('A') # We convert the character to a number between 0 and 26 by subtracting the ASCII value of 'A' from the ASCII value of the character
-            k_num = ord(k_char) - ord('A') # We do the same for the key character
-            c_num = (t_num + k_num) % 26 # We add the text number and the key number and taket the modulus 26 to wrap around the alphabet
-            c_char = chr(c_num + ord('A')) # We convert the resulting number back to a character by adding the ASCII value of 'A'
+    for t_char, k_char in zip(text, key):
+        if t_char.isupper():  # حرف كبير
+            t_num = ord(t_char) - ord('A')
+            k_num = ord(k_char.upper()) - ord('A')
+            c_num = (t_num + k_num) % 26
+            c_char = chr(c_num + ord('A'))
             ciphertext += c_char
-        else:
+        elif t_char.islower():  # حرف صغير
+            t_num = ord(t_char) - ord('a')
+            k_num = ord(k_char.lower()) - ord('a')
+            c_num = (t_num + k_num) % 26
+            c_char = chr(c_num + ord('a'))
+            ciphertext += c_char
+        else:  
             ciphertext += t_char
+
     return ciphertext
-def decrypt(ciphertext, key): # We define the decrypt function that takes the ciphertext and the key as parameters
-    ciphertext = ciphertext.upper() # We change the ciphertext to uppercase to simplify the decryption process
-    key =repeat_key(ciphertext, key.upper())
+
+def decrypt(ciphertext, key):
+    key = repeat_key(ciphertext, key)
     plaintext = ""
+
     for c_char, k_char in zip(ciphertext, key):
-        if c_char.isalpha():
+        if c_char.isupper():
             c_num = ord(c_char) - ord('A')
-            k_num = ord(k_char) - ord('A')
-            t_num = (c_num - k_num + 26) % 26 # We subtract the key number from the ciphertext number and add 26 to ensure we get a positive result before taking modulus 26
+            k_num = ord(k_char.upper()) - ord('A')
+            t_num = (c_num - k_num + 26) % 26
             t_char = chr(t_num + ord('A'))
+            plaintext += t_char
+        elif c_char.islower():
+            c_num = ord(c_char) - ord('a')
+            k_num = ord(k_char.lower()) - ord('a')
+            t_num = (c_num - k_num + 26) % 26
+            t_char = chr(t_num + ord('a'))
             plaintext += t_char
         else:
             plaintext += c_char
+
     return plaintext
+
 # Example usage
 # =============================
 # the main program
