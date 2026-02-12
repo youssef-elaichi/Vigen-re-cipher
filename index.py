@@ -3,7 +3,7 @@ def repeat_key(text, key): # We define the repeat_key function that takes the te
     key_index = 0 # We initialize a key index to keep track of our position in the key
     for char in text: # We iterate through each character in the text 
         if char.isalpha(): # We check if the character is an alphabet
-            pepeated_key = key[key_index % len(key)] # We repeat the key by using the modulus operator to wrap around the key
+            repeated_key += key[key_index % len(key)] # We repeat the key by using the modulus operator to wrap around the key
             key_index += 1 # We increment the key index to move to the next character in the key
         else:
             pepeated_key = char # It is not an alphabet, so we keep it as it is 
