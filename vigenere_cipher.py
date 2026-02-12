@@ -48,12 +48,12 @@ def encrypt_with_progress(text, key):
     return ciphertext
 
 
-def decrypt(ciphertext, key):
-    """Decrypt the text using Vigenere cipher while preserving case."""
+def decrypt_with_progress(ciphertext, key):
+    """Decrypt the text with progress feedback."""
     key = repeat_key(ciphertext, key)
     plaintext = ""
 
-    for c_char, k_char in zip(ciphertext, key):
+    for i, (c_char, k_char) in enumerate(zip(ciphertext, key), start=1):
         if c_char.isupper():
             c_num = ord(c_char) - ord('A')
             k_num = ord(k_char.upper()) - ord('A')
@@ -67,7 +67,15 @@ def decrypt(ciphertext, key):
         else:
             plaintext += c_char
 
+        # Print progress every 5%
+        if i % max(1, len(ciphertext)//20) == 0:
+            percent = (i / len(ciphertext)) * 100
+            print(f"Progress: {percent:.0f}%", end="\r")
+            time.sleep(0.01)  # Optional: slow down to see progress
+
+    print()  # new line after progress
     return plaintext
+
 
 # ==============================
 # Main Program with Menu
