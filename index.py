@@ -44,7 +44,7 @@ def decrypt(ciphertext, key): # We define the decrypt function that takes the ci
 print("=== Vigenere Cipher ===")
 while True:
 
-    print("/n1 - Encrypt")
+    print("\n1 - Encrypt")
     print("2 - Decrypt")
     print("3 - Exit")
 
