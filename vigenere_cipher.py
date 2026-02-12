@@ -4,6 +4,7 @@
 # Supports both manual input and reading/writing files
 # Preserves letter case and ignores non-alphabetic characters
 # ==============================
+import time  
 
 def repeat_key(text, key):
     """Repeat the key to match the length of the text, skipping non-alphabetic characters."""
@@ -17,12 +18,13 @@ def repeat_key(text, key):
             repeated_key += char
     return repeated_key
 
-def encrypt(text, key):
-    """Encrypt the text using Vigenere cipher while preserving case."""
+
+def encrypt_with_progress(text, key):
     key = repeat_key(text, key)
     ciphertext = ""
 
-    for t_char, k_char in zip(text, key):
+    for i, (t_char, k_char) in enumerate(zip(text, key), start=1):
+
         if t_char.isupper():
             t_num = ord(t_char) - ord('A')
             k_num = ord(k_char.upper()) - ord('A')
@@ -36,7 +38,15 @@ def encrypt(text, key):
         else:
             ciphertext += t_char
 
+        # Print progress every 5%
+        if i % max(1, len(text)//20) == 0:
+            percent = (i / len(text)) * 100
+            print(f"Progress: {percent:.0f}%", end="\r")
+            time.sleep(0.01)  # Optional: slow down to see progress
+
+    print()  # new line after progress
     return ciphertext
+
 
 def decrypt(ciphertext, key):
     """Decrypt the text using Vigenere cipher while preserving case."""
